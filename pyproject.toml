@@ -1,0 +1,38 @@
+[tool.poetry]
+name = "fastapi-tdd"
+version = "0.1.0"
+description = ""
+authors = ["Grzegorz Kocjan <grzegorz@kocjan.me>"]
+readme = "README.md"
+packages = [{include = "fastapi_tdd"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+fastapi = "^0.98.0"
+sqlalchemy = "^2.0.17"
+uvicorn = "^0.22.0"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.4.0"
+httpx = "^0.24.1"
+black = "^23.3.0"
+ruff = "^0.0.275"
+
+[tool.ruff]
+select = [
+    # Pyflakes
+    "F",
+    # Pycodestyle
+    "E",
+    "W",
+    # isort
+    "I"
+]
+src = ["fastapi_tdd", "tests"]
+
+[tool.ruff.isort]
+known-first-party = ["fastapi_tdd"]
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
