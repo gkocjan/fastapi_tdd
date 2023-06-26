@@ -4,3 +4,6 @@ During this workshop, we will create a small service using FastAPI that will be 
 An SKU represents a single game/DLC that can be purchased (i.e. on Steam). In contrast, a product refers to a group of many SKUs related to each other (e.g., a game and all its DLCs).
 
 ![product to sku example](img/product_sku_example.png)
+
+## Task 1
+Write your first test. Don't bother naming things, creating API or setting up a database. Just write a simple test with `assert False` in it.
