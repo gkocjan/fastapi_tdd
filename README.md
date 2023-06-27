@@ -26,3 +26,29 @@ Bad name example:
 Good name example:
 - `test_update_user_with_invalid_data_returns_400_status_code`
 - `test_update_user_with_invalid_data_returns_list_of_invalid_fields_with_reason_and_error_type`
+
+## Task 4
+Write your first failing test. Try to use as few lines of code as possible while still adhering to PEP8/Black coding standards.
+
+Example test from [FastAPI docs](https://fastapi.tiangolo.com/tutorial/testing/):
+
+```python
+from fastapi import FastAPI
+from fastapi.testclient import TestClient
+
+app = FastAPI()
+
+
+@app.get("/")
+async def read_main():
+    return {"msg": "Hello World"}
+
+
+client = TestClient(app)
+
+
+def test_read_main():
+    response = client.get("/")
+    assert response.status_code == 200
+    assert response.json() == {"msg": "Hello World"}
+```
