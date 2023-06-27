@@ -6,10 +6,16 @@ in case of auth:
 test_get_sku_returns_401_for_unauthorized_user
 """
 
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from fastapi.testclient import TestClient
 
 app = FastAPI()
+
+
+@app.get("/sku/{sku_id}")
+def get_sku_by_id(sku_id: str):
+    raise HTTPException(status_code=404, detail="SKU not found")
+
 
 client = TestClient(app)
 
