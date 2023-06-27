@@ -52,3 +52,6 @@ def test_read_main():
     assert response.status_code == 200
     assert response.json() == {"msg": "Hello World"}
 ```
+
+## Task 5
+Make the test green! Let it be ugly, don't organize your code. Find the simplest way to pass the test (hint: you can return specific status code and message in FastAPI with [HTTPException](https://fastapi.tiangolo.com/tutorial/handling-errors/)).
