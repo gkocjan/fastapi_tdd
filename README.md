@@ -7,3 +7,6 @@ An SKU represents a single game/DLC that can be purchased (i.e. on Steam). In co
 
 ## Task 1
 Write your first test. Don't bother naming things, creating API or setting up a database. Just write a simple test with `assert False` in it.
+
+## Task 2
+Search for an example of how to write a test for FastAPI. (hint: documentation is your best friend!)
