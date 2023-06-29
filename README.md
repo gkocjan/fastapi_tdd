@@ -73,3 +73,8 @@ db["TD:4321"] = {
 
 ## Task 7
 Make the test green!
+
+## Task 8
+Write a test that checks if `GET /sku/{sku_id}` returns `sku_id` and `name` with expected values. Run the test, and verify that it fails.
+
+Then, and only then, write code to passes the test.
