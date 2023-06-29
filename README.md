@@ -55,3 +55,18 @@ def test_read_main():
 
 ## Task 5
 Make the test green! Let it be ugly, don't organize your code. Find the simplest way to pass the test (hint: you can return specific status code and message in FastAPI with [HTTPException](https://fastapi.tiangolo.com/tutorial/handling-errors/)).
+
+
+## Task 6
+Write a test that checks if `GET /sku/{sku_id}` returns status 200 for existing sku_id.
+
+How to add existing SKU? Implement your database and add it at the beginning of the test.
+
+Example database implementation:
+```python
+db = {}
+db["TD:4321"] = {
+    "sku_id": "TD:4321",
+    "name": "SKU name 1",
+}
+```
