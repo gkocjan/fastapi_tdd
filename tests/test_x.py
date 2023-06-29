@@ -35,12 +35,7 @@ def test_get_sku_for_existing_id_returns_sku_id_and_name_v1(single_SKU_in_DB):
     }
 
 
-def test_get_sku_for_existing_id_returns_sku_id_and_name_v2():
-    db["TD:4321"] = {
-        "sku_id": "TD:4321",
-        "name": "SKU name 1",
-    }
-
+def test_get_sku_for_existing_id_returns_sku_id_and_name_v2(single_SKU_in_DB):
     response = client.get("/sku/TD:4321")
     result_sku = response.json()
 
