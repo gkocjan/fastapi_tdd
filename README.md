@@ -78,3 +78,8 @@ Make the test green!
 Write a test that checks if `GET /sku/{sku_id}` returns `sku_id` and `name` with expected values. Run the test, and verify that it fails.
 
 Then, and only then, write code to passes the test.
+
+## Task 9
+Refactor your tests to use [pytest.fixtures](https://docs.pytest.org/en/latest/how-to/fixtures.html#fixtures-can-request-other-fixtures) for creating existing SKUs in the database.
+
+If you didn't move your API code to a separate module, then it's a good time to do it also :)
