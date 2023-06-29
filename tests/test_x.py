@@ -8,10 +8,16 @@ client = TestClient(app)
 
 @pytest.fixture
 def single_SKU_in_DB():
+    # prepare data for the test
+    db.clear()
     db["TD:4321"] = {
         "sku_id": "TD:4321",
         "name": "SKU name 1",
     }
+
+    yield  # run the test
+
+    db.clear()  # clean up after the test
 
 
 def test_get_sku_for_not_existing_id_returns_404_status_code_and_message_in_detail_field():
