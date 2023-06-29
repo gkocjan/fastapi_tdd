@@ -1,17 +1,6 @@
-from fastapi import FastAPI, HTTPException
 from fastapi.testclient import TestClient
 
-app = FastAPI()
-db = {}
-
-
-@app.get("/sku/{sku_id}")
-def get_sku_by_id(sku_id: str):
-    sku = db.get(sku_id)
-    if sku is None:
-        raise HTTPException(status_code=404, detail="SKU not found")
-    return sku
-
+from fastapi_tdd.main import app, db
 
 client = TestClient(app)
 
