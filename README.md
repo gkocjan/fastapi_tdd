@@ -70,3 +70,6 @@ db["TD:4321"] = {
     "name": "SKU name 1",
 }
 ```
+
+## Task 7
+Make the test green!
