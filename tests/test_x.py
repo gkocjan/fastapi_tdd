@@ -41,3 +41,9 @@ def test_get_sku_for_existing_id_returns_sku_id_and_name_v2(single_SKU_in_DB):
 
     assert result_sku["sku_id"] == "TD:4321"
     assert result_sku["name"] == "SKU name 1"
+
+
+def test_make_sure_that_we_clean_up_the_db():
+    response = client.get("/sku/TD:4321")
+
+    assert response.status_code == 404
