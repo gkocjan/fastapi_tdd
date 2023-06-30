@@ -2,8 +2,7 @@ import pytest
 from fastapi.testclient import TestClient
 
 from fastapi_tdd.main import app
-from fastapi_tdd.repo import SKU, SKURepo
-from fastapi_tdd.repo import _db as db
+from fastapi_tdd.repo import SKU, SKURepo, _db
 
 
 @pytest.fixture
@@ -12,10 +11,20 @@ def client():
 
 
 @pytest.fixture
-def single_SKU_in_DB():
-    # prepare data for the test
-    db.clear()
-    SKURepo().save(
+def db():
+    _db.clear()
+    yield _db
+    _db.clear()
+
+
+@pytest.fixture
+def sku_repo(db) -> SKURepo:
+    return SKURepo()
+
+
+@pytest.fixture
+def single_SKU_in_DB(sku_repo: SKURepo):
+    sku_repo.save(
         SKU(
             sku_id="TD:4321",
             name="SKU name 1",
@@ -23,23 +32,13 @@ def single_SKU_in_DB():
         )
     )
 
-    yield  # run the test
-
-    db.clear()  # clean up after the test
-
 
 @pytest.fixture
-def single_assigned_SKU_in_DB():
-    # prepare data for the test
-    db.clear()
-    SKURepo().save(
+def single_assigned_SKU_in_DB(sku_repo: SKURepo):
+    sku_repo.save(
         SKU(
             sku_id="XC:653",
             name="SKU name 1",
             product_name="existing_assignment",
         )
     )
-
-    yield  # run the test
-
-    db.clear()  # clean up after the test
