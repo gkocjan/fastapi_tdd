@@ -1,24 +1,45 @@
 import pytest
 from fastapi.testclient import TestClient
+from sqlalchemy import create_engine
+from sqlalchemy.orm import Session
+from sqlalchemy.pool import StaticPool
 
-from fastapi_tdd.main import app, get_sku_repo
-from fastapi_tdd.repo import SKU, SKURepo
+from fastapi_tdd.main import app, get_session
+from fastapi_tdd.repo import SKU, Base, SKURepo
+
+
+@pytest.fixture(scope="session")
+def engine():
+    _engine = create_engine(
+        "sqlite://",
+        echo=True,
+        connect_args={"check_same_thread": False},
+        poolclass=StaticPool,
+    )
+    Base.metadata.create_all(_engine)
+    return _engine
+
+
+@pytest.fixture()
+def session(engine):
+    session = Session(engine)
+    session.begin()
+
+    yield session
+
+    session.rollback()
+    session.close()
 
 
 @pytest.fixture
-def client(sku_repo):
-    app.dependency_overrides[get_sku_repo] = lambda: sku_repo
+def client(session):
+    app.dependency_overrides[get_session] = lambda: session
     return TestClient(app)
 
 
 @pytest.fixture
-def db():
-    return {}
-
-
-@pytest.fixture
-def sku_repo(db) -> SKURepo:
-    return SKURepo(db)
+def sku_repo(session) -> SKURepo:
+    return SKURepo(session)
 
 
 @pytest.fixture
