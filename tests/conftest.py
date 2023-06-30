@@ -21,3 +21,18 @@ def single_SKU_in_DB():
     yield  # run the test
 
     db.clear()  # clean up after the test
+
+
+@pytest.fixture
+def single_assigned_SKU_in_DB():
+    # prepare data for the test
+    db.clear()
+    db["XC:653"] = {
+        "sku_id": "XC:653",
+        "name": "SKU name 1",
+        "product_name": "existing_assignment",
+    }
+
+    yield  # run the test
+
+    db.clear()  # clean up after the test

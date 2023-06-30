@@ -1,7 +1,6 @@
 from fastapi.testclient import TestClient
 
 """
-test_existing_assigned_id_and_product_name_in_body_returns_updated_assigned_sku
 test_existing_assigned_id_and_None_product_name_in_body_unassigns_product_from_sku
 test_existing_unassigned_id_and_None_product_name_in_body_returns_unassigned_sku
 """
@@ -31,3 +30,12 @@ def test_existing_unassigned_id_and_product_name_in_body_returns_assigned_sku(
 
     response = client.get("/sku/TD:4321")
     assert response.json()["product_name"] == "product"
+
+
+def test_existing_assigned_id_and_product_name_in_body_returns_updated_assigned_sku(
+    client: TestClient, single_assigned_SKU_in_DB
+):
+    client.put("/sku/XC:653", json={"product_name": "new_product"})
+
+    response = client.get("/sku/XC:653")
+    assert response.json()["product_name"] == "new_product"
