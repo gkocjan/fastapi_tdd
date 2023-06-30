@@ -16,6 +16,7 @@ def single_SKU_in_DB():
     db["TD:4321"] = {
         "sku_id": "TD:4321",
         "name": "SKU name 1",
+        "product_name": None,
     }
 
     yield  # run the test

@@ -22,6 +22,7 @@ def test_existing_id_returns_sku_id_and_name_v1(client: TestClient, single_SKU_i
     assert response.json() == {
         "sku_id": "TD:4321",
         "name": "SKU name 1",
+        "product_name": None,
     }
 
 
