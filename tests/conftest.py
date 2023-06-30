@@ -1,7 +1,8 @@
 import pytest
 from fastapi.testclient import TestClient
 
-from fastapi_tdd.main import app, db
+from fastapi_tdd.main import app
+from fastapi_tdd.repo import _db as db
 
 
 @pytest.fixture
