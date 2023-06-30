@@ -118,3 +118,25 @@ tests/
             assert response.json() == {"detail": "SKU not found"}
 
 ```
+
+## Task 11
+Make data persistent. But first, refactor your code and instead direct access to the `db` dictionary, wrap it around the repository class. Use the code below as a starting point.
+
+At the end of this task, you should access `db` dictionary only inside `SKURepo`. All other places should use the `SKURepo` methods.
+
+```python
+class SKU(BaseModel):
+    sku_id: str
+    name: str
+    product_name: str | None
+
+
+class SKURepo:
+    def get(self, sku_id) -> SKU | None:
+        pass
+
+    def save(self, sku: SKU) -> SKU:
+        pass
+```
+
+Run your tests frequently. In a perfect solution, they will never fail, even in the middle of refactoring!
