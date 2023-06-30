@@ -10,3 +10,8 @@ def get_sku_by_id(sku_id: str):
     if sku is None:
         raise HTTPException(status_code=404, detail="SKU not found")
     return sku
+
+
+@app.put("/sku/{sku_id}")
+def update_sku_by_id(sku_id: str):
+    raise HTTPException(status_code=404, detail="SKU not found")
