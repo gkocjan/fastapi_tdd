@@ -1,25 +1,24 @@
 import pytest
 from fastapi.testclient import TestClient
 
-from fastapi_tdd.main import app
-from fastapi_tdd.repo import SKU, SKURepo, _db
+from fastapi_tdd.main import app, get_sku_repo
+from fastapi_tdd.repo import SKU, SKURepo
 
 
 @pytest.fixture
-def client():
+def client(sku_repo):
+    app.dependency_overrides[get_sku_repo] = lambda: sku_repo
     return TestClient(app)
 
 
 @pytest.fixture
 def db():
-    _db.clear()
-    yield _db
-    _db.clear()
+    return {}
 
 
 @pytest.fixture
 def sku_repo(db) -> SKURepo:
-    return SKURepo()
+    return SKURepo(db)
 
 
 @pytest.fixture

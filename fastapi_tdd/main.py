@@ -1,13 +1,20 @@
 from fastapi import Depends, FastAPI, HTTPException
 from pydantic import BaseModel
 
-from fastapi_tdd.repo import SKURepo
+from fastapi_tdd.repo import SKU, SKURepo
 
 app = FastAPI()
 
+_db = {
+    "EX:0000": SKU(
+        sku_id="EX:0000",
+        name="example",
+    )
+}
+
 
 def get_sku_repo():
-    return SKURepo()
+    return SKURepo(_db)
 
 
 @app.get("/sku/{sku_id}")
