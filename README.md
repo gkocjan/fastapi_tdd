@@ -83,3 +83,38 @@ Then, and only then, write code to passes the test.
 Refactor your tests to use [pytest.fixtures](https://docs.pytest.org/en/latest/how-to/fixtures.html#fixtures-can-request-other-fixtures) for creating existing SKUs in the database.
 
 If you didn't move your API code to a separate module, then it's a good time to do it also :)
+
+## Acceptance criteria #2
+- User can set SKU product_name
+- User can unset SKU product assignment
+
+## Task 10
+Write a list of tests fulfilling those acceptance criteria (at least 3). For simplification, assume that from now SKU will have a third field, `product_name`. Use `PUT /sku/{sku_id}` for those operations. Rember about edge cases.
+
+Work to fulfil those new acceptance criteria for product assignments. Flow stays the same. Pick one test from the list, write it, check if it is failing and make it green.
+
+Writing new tests in a separate file would be a good idea. To do so, first, move your fixtures to `conftest.py` file. `TestClient` instance should also be returned by fixture in that common `conftest.py` file. Avoid creating utilities for tests that are not fixtures!
+
+```python
+tests/
+    conftest.py
+        # content of tests/conftest.py
+        import pytest
+        from fastapi.testclient import TestClient
+
+        from fastapi_tdd.main import app
+
+
+        @pytest.fixture
+        def client():
+            return TestClient(app)
+
+    test_get_sku_by_id.py
+        # content of tests/test_get_sku_by_id.py
+        def test_not_existing_id_returns_404_status_code_and_message_in_detail_field(client):
+            response = client.get("/sku/NOT_EXISTING")
+
+            assert response.status_code == 404
+            assert response.json() == {"detail": "SKU not found"}
+
+```
