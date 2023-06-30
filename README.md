@@ -140,3 +140,88 @@ class SKURepo:
 ```
 
 Run your tests frequently. In a perfect solution, they will never fail, even in the middle of refactoring!
+
+## Task 12
+Let's use an actual database! First, in `repo.py`` add the SqlAlchemy model definition for our table.
+
+```python
+# repo.py
+
+from sqlalchemy import select
+from sqlalchemy.orm import DeclarativeBase, Mapped, Session, mapped_column
+
+
+class Base(DeclarativeBase):
+    pass
+
+
+class _DBSKU(Base):
+    __tablename__ = "sku"
+    sku_id: Mapped[str] = mapped_column(primary_key=True)
+    name: Mapped[str]
+    product_name: Mapped[str | None]
+```
+
+and init `SqlAlchemy` in `main.py`
+```python
+#main.py
+
+from pathlib import Path
+
+from sqlalchemy import create_engine
+from sqlalchemy.orm import Session
+
+
+BASE_DIR = Path(__file__).parent.parent.resolve()
+engine = create_engine(f"sqlite:///{BASE_DIR/'db.sqlite'}", echo=True)
+Base.metadata.create_all(engine)
+
+
+def get_session():
+    session = Session(engine)
+    with session.begin():
+        yield session
+
+```
+
+We can now prepare tests to run in SQLite in-memory DB
+```python
+# conftest.py
+
+@pytest.fixture(scope="session")
+def engine():
+    _engine = create_engine(
+        "sqlite://",
+        echo=True,
+        connect_args={"check_same_thread": False},
+        poolclass=StaticPool,
+    )
+    Base.metadata.create_all(_engine)
+    return _engine
+
+
+@pytest.fixture()
+def session(engine):
+    session = Session(engine)
+    session.begin()
+    try:
+        yield session
+    finally:
+        session.rollback()
+        session.close()
+
+
+@pytest.fixture
+def client(session):
+    app.dependency_overrides[get_session] = lambda: session
+    return TestClient(app)
+
+
+@pytest.fixture
+def sku_repo(session) -> SKURepo:
+    return SKURepo(session)
+```
+
+Now having this ready and based on SqlAlchemy [documentation](https://docs.sqlalchemy.org/en/20/orm/quickstart.html#create-objects-and-persist), write queries for `SKURepo` methods (pass session via constructor). Don't modify returned types ([in Pydantic documentation](https://docs.pydantic.dev/1.10/usage/models/#orm-mode-aka-arbitrary-class-instances) is an example of how to create Pydantic `SKU` object from the orm model )
+
+Then in `main.py` use `get_session` as a dependency to create `SKURepo` in `get_sku_repo`.
